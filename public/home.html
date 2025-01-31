@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/hstyles.css">
+    <title>HardwareZone</title>
+  </head>
+  <body>
+    <!-- Banner con nombre y logo -->
+    <header class="banner">
+      <img src="Logo.png" alt="Logo" class="logo">
+      <h1>HardwareZone</h1>
+      <div class="cart-icon" id="cart-icon">
+        🛒
+        <span class="cart-count" id="cart-count">0</span>
+      </div>
+    </header>
+    <div class="cart-sidebar" id="cart-sidebar">
+      <h2>Carrito de Compras</h2>
+      <div id="cart-items">
+        <!-- Los productos del carrito se mostrarán aquí -->
+      </div>
+      <button id="close-cart">Cerrar</button>
+    </div>
+    <!-- Sección de productos -->
+    <section class="products">
+      <h2>Productos Disponibles</h2>
+      <div id="product-list" class="product-grid">
+        <!-- Los productos se cargarán aquí dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Botón para añadir productos -->
+    <button id="add-product-btn" class="add-product-btn">Añadir Producto</button>
+
+    <!-- Formulario para añadir productos (oculto por defecto) -->
+    <div id="add-product-modal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Añadir Producto</h2>
+        <form id="add-product-form">
+          <input type="text" id="product-name" placeholder="Nombre" required>
+          <input type="number" id="product-price" placeholder="Precio" required>
+          <input type="text" id="product-description" placeholder="Descripción" required>
+          <input type="text" id="product-url" placeholder="URL de la imagen" required>
+          <input type="number" id="product-quantity" placeholder="Cantidad" required>
+          <button type="submit">Guardar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Script para manejar la lógica -->
+    <script src="js/home.js"></script>
+  </body>
+</html>
