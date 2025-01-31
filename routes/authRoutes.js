@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/login', login);
 
-// Añadir un producto al carrito del usuario actual
+// Añade un producto al carrito del usuario actual
 router.post('/cart', authMiddleware, async (req, res) => {
   const { productId } = req.body;
   try {
@@ -48,9 +48,9 @@ router.delete('/cart/:productId', authMiddleware, async (req, res) => {
       return res.status(404).json({ message: 'Producto no encontrado en el carrito' });
     }
 
-    // Aumentar el stock del producto
+    // Aumenta el stock según la cantidad en el carrito
     const product = await Product.findById(productId);
-    product.quantity += user.cart[productIndex].quantity; // Aumentar el stock según la cantidad en el carrito
+    product.quantity += user.cart[productIndex].quantity; 
     await product.save();
 
     // Eliminar el producto del carrito

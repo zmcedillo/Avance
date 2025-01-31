@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
-
+//Recibe el usuario y contraseña, la encripta
 const login = async (req, res) => {
   const { username, password } = req.body;
   
