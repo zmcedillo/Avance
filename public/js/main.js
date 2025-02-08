@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Obtén los valores de los campos
       const username = document.getElementById('username').value;
       const password = document.getElementById('password').value;
+      
 
       // Verifica si los campos están vacíos
       if (!username || !password) {

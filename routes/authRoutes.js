@@ -7,6 +7,21 @@ const router = express.Router();
 
 router.post('/login', login);
 
+router.post("/register", async (req, res) => {
+  try {
+    const { username, password, role } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 8);
+    const newUser = new User({ username, password: hashedPassword, role });
+    await newUser.save();
+
+    res.status(201).json({ message: "Usuario registrado" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 // Añade un producto al carrito del usuario actual
 router.post('/cart', authMiddleware, async (req, res) => {
   const { productId } = req.body;

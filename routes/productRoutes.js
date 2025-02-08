@@ -1,6 +1,21 @@
 const express = require('express');
 const Product = require('../models/Product');
+const jwt = require("jsonwebtoken");
 const router = express.Router();
+
+const authenticate = (req, res, next) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (!token) return res.status(401).json({ message: "Acceso denegado" });
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = decoded;
+    next();
+  } catch {
+    res.status(401).json({ message: "Token inválido" });
+  }
+};
+
 
 // Obtener todos los productos
 router.get('/', async (req, res) => {
@@ -13,7 +28,10 @@ router.get('/', async (req, res) => {
 });
 
 // Añadir un producto
-router.post('/', async (req, res) => {
+router.post('/',authenticate, async (req, res) => {
+  if (req.user.role !== "admin") {
+    return res.status(403).json({ message: "No tienes permisos para crear productos" });
+  }
   const { name, price, description, url, quantity } = req.body;
   try {
     const product = new Product({ name, price, description, url, quantity });

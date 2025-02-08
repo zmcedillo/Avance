@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItems = document.getElementById('cart-items');
   const closeCartBtn = document.getElementById('close-cart');
   const cartCount = document.getElementById('cart-count');
+  const User = require('../models/User');
 
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -64,6 +65,34 @@ document.addEventListener('DOMContentLoaded', () => {
   closeCartBtn.addEventListener('click', () => {
     cartSidebar.classList.remove('open');
   });
+// Conseguir rol del usuario loggeado
+  async function getUserRole() {
+    const token = localStorage.getItem("token"); // Asume que guardaste el token en localStorage
+    if (!token) return null;
+  
+    try {
+      const response = await fetch("http://avance.onrender.com/api/users/role", {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await response.json();
+      return data.role; // Retorna el rol (ejemplo: "admin" o "user")
+    } catch (error) {
+      console.error("Error obteniendo el rol:", error);
+      return null;
+    }
+  }
+
+  async function checkRole() {
+    const role = await getUserRole();
+    if (role !== "admin") {
+      addProductBtn.style.display = 'none'; // Ocultar botón si no es admin
+    } else {
+      addProductBtn.style.display = 'block'; // Mostrar botón si es admin
+    }
+  }
+
+  checkRole();
 
 // Función para añadir un producto al carrito
 async function addToCart(productId) {
@@ -72,14 +101,14 @@ async function addToCart(productId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`, // Incluir el token en la solicitud
+        Authorization: `Bearer ${token}`, 
       },
       body: JSON.stringify({ productId }),
     });
 
     if (response.ok) {
-      loadProducts(); // Recargar productos para actualizar el stock
-      loadCart(); // Recargar el carrito
+      loadProducts(); // Recarga los productos para actualizar el stock
+      loadCart(); // Recarga el carrito
     } else {
       const errorData = await response.json();
       alert(errorData.message || 'Error al añadir al carrito');
@@ -97,7 +126,7 @@ async function removeFromCart(productId) {
     const response = await fetch(`/api/users/cart/${productId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: `Bearer ${token}`, // Incluir el token en la solicitud
+        Authorization: `Bearer ${token}`, 
       },
     });
 
@@ -139,7 +168,7 @@ window.removeFromCart = removeFromCart;
 async function loadCart() {
   try {
     const response = await fetch(`/api/users/cart`, {
-      headers: { Authorization: `Bearer ${token}` }, // Incluir el token en la solicitud
+      headers: { Authorization: `Bearer ${token}` }, 
     });
 
     if (!response.ok) {
