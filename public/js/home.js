@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
+  const role = localStorage.getItem('userRole');
 
   if (!token || !userId) {
     window.location.href = '/login.html'; // Redirigir al login si no hay token o userId
@@ -41,10 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
       url: document.getElementById('product-url').value,
       quantity: parseInt(document.getElementById('product-quantity').value),
     };
-
+    
     const response = await fetch('/api/products', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`},
       body: JSON.stringify(product),
     });
 

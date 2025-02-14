@@ -27,9 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Verifica si la respuesta es exitosa
         if (response.ok) {
-          const { token,userId } = await response.json();
+          const { token,userId, role } = await response.json();
           localStorage.setItem('token', token); // Guarda el token en localStorage
           localStorage.setItem('userId', userId);
+          localStorage.setItem('userRole', role);
           window.location.href = '/home.html'; // Redirige a la página principal
         } else {
           // Si la respuesta no es exitosa, muestra un mensaje de error

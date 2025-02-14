@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.post('/login', login);
 
-router.get("/role", authMiddleware, async (req, res) => {
+router.get("/role", authMiddleware.authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId, "role");
     if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
@@ -33,7 +33,7 @@ router.post("/register", async (req, res) => {
 
 
 // Añade un producto al carrito del usuario actual
-router.post('/cart', authMiddleware, async (req, res) => {
+router.post('/cart', authMiddleware.authMiddleware, async (req, res) => {
   const { productId } = req.body;
   try {
 
@@ -63,7 +63,7 @@ router.post('/cart', authMiddleware, async (req, res) => {
 });
 
 // Eliminar un producto del carrito del usuario actual
-router.delete('/cart/:productId', authMiddleware, async (req, res) => {
+router.delete('/cart/:productId', authMiddleware.authMiddleware, async (req, res) => {
   const { productId } = req.params;
   try {
     const user = await User.findById(req.userId);
@@ -90,7 +90,7 @@ router.delete('/cart/:productId', authMiddleware, async (req, res) => {
 });
 
 // Obtener el carrito de un usuario con detalles de los productos
-router.get('/cart', authMiddleware, async (req, res) => {
+router.get('/cart', authMiddleware.authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId).populate('cart.productId');
     res.json(user.cart);

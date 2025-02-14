@@ -9,10 +9,18 @@ const authMiddleware = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.userId;
+    req.userRole = decoded.role;
     next();
   } catch (err) {
     res.status(401).json({ message: 'Por alguna razon el token no es valido' });
   }
 };
 
-module.exports = authMiddleware;
+const adminMiddleware = (req, res, next) => {
+  if (req.userRole !== 'admin') {
+    return res.status(403).json({ message: 'Acceso prohibido: se requiere rol de administrador, role: ' + req.userRole });
+  }
+  next();
+};
+
+module.exports = { authMiddleware, adminMiddleware };
