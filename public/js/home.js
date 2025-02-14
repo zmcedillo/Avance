@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const cartItems = document.getElementById('cart-items');
   const closeCartBtn = document.getElementById('close-cart');
   const cartCount = document.getElementById('cart-count');
-  const User = require('../models/User');
 
   const token = localStorage.getItem('token');
   const userId = localStorage.getItem('userId');
@@ -67,15 +66,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 // Conseguir rol del usuario loggeado
   async function getUserRole() {
-    const token = localStorage.getItem("token"); // Asume que guardaste el token en localStorage
     if (!token) return null;
   
     try {
-      const response = await fetch("http://avance.onrender.com/api/users/role", {
+      const response = await fetch("/api/users/role", {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` }
       });
+      if (!response.ok) {
+        throw new Error(`Error HTTP: ${response.status}`);
+      }
       const data = await response.json();
+      
       return data.role; // Retorna el rol (ejemplo: "admin" o "user")
     } catch (error) {
       console.error("Error obteniendo el rol:", error);
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function checkRole() {
     const role = await getUserRole();
+    alert("Role: " + role);
     if (role !== "admin") {
       addProductBtn.style.display = 'none'; // Ocultar botón si no es admin
     } else {

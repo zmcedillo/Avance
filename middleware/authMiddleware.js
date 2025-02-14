@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
-// Verificamos que su token de inicio de sesion siga activo
+
 const authMiddleware = (req, res, next) => {
   const token = req.header('Authorization')?.replace('Bearer ', '');
   if (!token) {
+    console.log('No se encontro el token');
     return res.status(401).json({ message: 'No se encontro tu token de sesion, acceso denegado' });
   }
   try {

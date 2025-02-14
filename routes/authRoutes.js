@@ -3,16 +3,26 @@ const { login } = require('../controllers/authController');
 const authMiddleware = require('../middleware/authMiddleware');
 const User = require('../models/User');
 const Product = require('../models/Product');
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 router.post('/login', login);
 
+router.get("/role", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findById(req.userId, "role");
+    if (!user) return res.status(404).json({ error: "Usuario no encontrado" });
+
+    res.json({ role: user.role });
+  } catch (error) {
+    res.status(500).json({ error: "Error al obtener el rol" });
+  }
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { username, password, role } = req.body;
-
-    const hashedPassword = await bcrypt.hash(password, 8);
-    const newUser = new User({ username, password: hashedPassword, role });
+    const newUser = new User({ username, password, role });
     await newUser.save();
 
     res.status(201).json({ message: "Usuario registrado" });

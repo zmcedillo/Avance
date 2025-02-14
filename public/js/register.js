@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const { token,userId } = await response.json();
             localStorage.setItem('token', token); // Guarda el token en localStorage
             localStorage.setItem('userId', userId);
+            alert('Usuario registrado exitosamente');
             window.location.href = '/login.html'; // Redirige a la página principal
           } else {
             // Si la respuesta no es exitosa, muestra un mensaje de error
